@@ -6,7 +6,32 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Loader2, Sparkles } from "lucide-react"
+
+const imageStyleOptions = [
+  {
+    id: "anime",
+    label: "Anime",
+    image: "/images/anime.png",
+  },
+  {
+    id: "realistic",
+    label: "Realistic",
+    image: "/images/realistic.png",
+  },
+  {
+    id: "cartoon",
+    label: "Cartoon",
+    image: "/images/cartoon.png",
+  },
+  {
+    id: "cyberpunk",
+    label: "Cyberpunk",
+    image: "/images/cyberpunk.png",
+  },
+];
+
 
 const Form = () => {
     const [projectName, setProjectName] = useState("");
@@ -16,6 +41,7 @@ const Form = () => {
     const [isScriptLoading, setIsScriptLoading] = useState(false);
     const [isVideoLoading, setIsVideoLoading] = useState(false);
     const [videoPath, setVideoPath] = useState("");
+    const [imageStyle, setImageStyle] = useState("anime");
 
     const handleGenerateScript = () => {
         if (topic.trim() === "") {
@@ -35,10 +61,15 @@ const Form = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!imageStyle) {
+            alert("Please select an image style.");
+            return;
+        }
         const formData = {
             projectName,
             topic,
-            script
+            script,
+            imageStyle
         };
         setIsVideoLoading(true);
         axios.post("http://localhost:8000/generate-video", formData).then((response) => {
@@ -155,6 +186,9 @@ const Form = () => {
                                             </>
                                         )}
                                     </Button>
+                                    {isScriptLoading && (
+                                        <Skeleton className="w-full h-36 rounded-lg bg-gray-400/70" />
+                                    )}
                                 </div>
                             ) : (
                                 <div className="bg-[#1A1A1A] border border-[#333333] rounded-lg p-4 text-zinc-300 whitespace-pre-line min-h-[120px]">
@@ -163,6 +197,18 @@ const Form = () => {
                             )}
                         </div>
                     )}
+                    <Label className="text-zinc-400">Select Image Style</Label>
+                    <div className="flex flex-row flex-wrap gap-x-13 gap-y-10 justify-center">
+                        {imageStyleOptions.map((style) => (
+                            <img
+                                key={style.id}
+                                src={style.image}
+                                alt={style.label}
+                                className={`w-40 h-40 rounded-xl transition-all hover:scale-105 cursor-pointer ${imageStyle === style.id ? 'border-2 border-indigo-500' : ''}`}
+                                onClick={() => setImageStyle(style.id)}
+                            />
+                        ))}
+                    </div>
                     <Button
                         type="submit"
                         disabled={isVideoLoading}
