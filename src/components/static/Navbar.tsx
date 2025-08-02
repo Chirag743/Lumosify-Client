@@ -67,7 +67,7 @@ const Navbar = () => {
               variant="ghost"
               className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-2 rounded-lg font-semibold shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:from-indigo-500 hover:to-purple-500 transition-all"
             >
-              <a href="https://github.com/chirag743/Text-To-Video" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Chirag743/Lumosify-Client" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
             </Button>

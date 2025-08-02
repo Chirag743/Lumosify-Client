@@ -47,7 +47,7 @@ const Footer = () => {
           transition={{ delay: 0.4, duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          href="https://github.com/yourusername/Lumosify"
+          href="https://github.com/Chirag743/Lumosify-Client"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-zinc-400 hover:text-purple-400 transition"
