@@ -30,7 +30,7 @@ const Home = () => {
 	const navigate = useNavigate();
 
 	const handleGetStarted = () => {
-		navigate("/form");
+		navigate("/generate");
 	};
 
 	return (
