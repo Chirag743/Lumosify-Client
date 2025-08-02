@@ -8,6 +8,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Loader2, Sparkles } from "lucide-react"
 import { motion } from "motion/react"
+import { showToast } from "@/components/ui/custom-toast"
+import { handleApiError } from '../utils/ApiError'
+import { useNavigate } from 'react-router-dom'
 
 interface FormProps {
     setVideoPath: (path: string) => void;
@@ -44,18 +47,26 @@ const Form: React.FC<FormProps> = ({ setVideoPath }) => {
     const [isScriptLoading, setIsScriptLoading] = useState(false);
     const [isVideoLoading, setIsVideoLoading] = useState(false);
     const [imageStyle, setImageStyle] = useState("anime");
+    const navigate = useNavigate();
 
     const handleGenerateScript = () => {
         if (topic.trim() === "") {
-            alert("Please enter a topic.");
+            showToast({ 
+                message: "Please enter a topic.", 
+                type: "error" 
+            });
             return;
         }
         setIsScriptLoading(true);
         setScript(""); // Clear previous script
         axios.post("http://localhost:8000/generate-script", { topic }).then((response) => {
             setScript(response.data.script);
+            showToast({ 
+                message: "Script generated successfully!", 
+                type: "success" 
+            });
         }).catch((error) => {
-            console.error("There was an error making the request:", error);
+            handleApiError(error, navigate);
         }).finally(() => {
             setIsScriptLoading(false);
         });
@@ -64,7 +75,10 @@ const Form: React.FC<FormProps> = ({ setVideoPath }) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!imageStyle) {
-            alert("Please select an image style.");
+            showToast({ 
+                message: "Please select an image style.", 
+                type: "error" 
+            });
             return;
         }
         const formData = {
@@ -74,11 +88,22 @@ const Form: React.FC<FormProps> = ({ setVideoPath }) => {
             imageStyle
         };
         setIsVideoLoading(true);
+        showToast({ 
+            message: "Starting video generation...", 
+            type: "loading" 
+        });
         axios.post("http://localhost:8000/generate-video", formData).then((response) => {
             setVideoPath(response.data.video_path);
-            alert("Video generated successfully!");
+            showToast({ 
+                message: "Video generated successfully! Ready to preview.", 
+                type: "success" 
+            });
         }).catch((error) => {
             console.error("There was an error making the request:", error);
+            showToast({ 
+                message: "Failed to generate video. Please try again.", 
+                type: "error" 
+            });
         }).finally(() => {
             setIsVideoLoading(false);
         });
