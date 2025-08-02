@@ -53,10 +53,10 @@ const Navbar = () => {
           </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link 
-              to="/form" 
-              className={`font-medium transition-colors ${location.pathname === "/form" ? "text-purple-400" : "text-zinc-400 hover:text-purple-400"}`}
+              to="/generate" 
+              className={`font-medium transition-colors ${location.pathname === "/generate" ? "text-purple-400" : "text-zinc-400 hover:text-purple-400"}`}
             >
-              Create
+              Generate
             </Link>
           </motion.div>
           <motion.div
